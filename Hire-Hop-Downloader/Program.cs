@@ -24,9 +24,9 @@ namespace Hire_Hop_Downloader
 
             if (loggedin)
             {
-                JObject job = await Jobs.GetJobData(myHHConn, "1131");
+                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _money_owed = false }, false);
 
-                Console.WriteLine($"Loaded job {job["ID"]}");
+                Console.WriteLine($"Finished Collecting {results.Count} Results");
             }
         }
 
