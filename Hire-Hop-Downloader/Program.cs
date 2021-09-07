@@ -20,11 +20,14 @@ namespace Hire_Hop_Downloader
         {
             GetLogin(out string username, out string password);
 
+            Console.WriteLine("Performing log in");
             bool loggedin = await Authentication.Login(myHHConn, username, password);
 
             if (loggedin)
             {
-                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _money_owed = false }, false);
+                Console.WriteLine("Logged in");
+
+                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _money_owed = false }, true);
 
                 Console.WriteLine($"Finished Collecting {results.Count} Results");
             }
