@@ -1,8 +1,10 @@
 ﻿using Hire_Hop_Interface.Management;
+using Hire_Hop_Interface.Objects;
 using Hire_Hop_Interface.Requests;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Hire_Hop_Downloader
 {
@@ -27,7 +29,16 @@ namespace Hire_Hop_Downloader
             {
                 Console.WriteLine("Logged in");
 
+                await LabourData.Load(myHHConn);
+
                 var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _money_owed = false }, true);
+                var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x.Value));
+
+                foreach (Hire_Hop_Interface.Objects.Jobs j in jobs)
+                {
+                    j.costs = await j.CalculateCosts(myHHConn);
+                    Console.WriteLine($"{j.id}-- Total Cost: £{j.costs.totalCost}");
+                }
 
                 Console.WriteLine($"Finished Collecting {results.Count} Results");
             }
