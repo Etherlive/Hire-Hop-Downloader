@@ -1,25 +1,36 @@
-﻿using System.IO;
-using System;
-using Hire_Hop_Interface.Management;
+﻿using Hire_Hop_Interface.Management;
 using Hire_Hop_Interface.Requests;
 using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
 
 namespace Hire_Hop_Downloader
 {
-    class Program
+    internal class Program
     {
-        static ClientConnection myHHConn = new ClientConnection();
+        #region Fields
 
-        static void Main(string[] args)
+        private static ClientConnection myHHConn = new ClientConnection();
+
+        #endregion Fields
+
+        #region Methods
+
+        private static async void App()
         {
-            App();
-            while (true)
+            GetLogin(out string username, out string password);
+
+            bool loggedin = await Authentication.Login(myHHConn, username, password);
+
+            if (loggedin)
             {
-                System.Threading.Thread.Sleep(5000);
+                JObject job = await Jobs.GetJobData(myHHConn, "1131");
+
+                Console.WriteLine($"Loaded job {job["ID"]}");
             }
         }
 
-        static void GetLogin(out string username, out string password)
+        private static void GetLogin(out string username, out string password)
         {
             if (File.Exists("./login.json"))
             {
@@ -45,18 +56,15 @@ namespace Hire_Hop_Downloader
             }
         }
 
-        static async void App()
+        private static void Main(string[] args)
         {
-            GetLogin(out string username, out string password);
-
-            bool loggedin = await Authentication.Login(myHHConn, username, password);
-
-            if (loggedin)
+            App();
+            while (true)
             {
-                JObject job = await Jobs.GetJobData(myHHConn, "1131");
-
-                Console.WriteLine($"Loaded job {job["ID"]}");
+                System.Threading.Thread.Sleep(5000);
             }
         }
+
+        #endregion Methods
     }
 }
