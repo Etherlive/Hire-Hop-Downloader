@@ -33,7 +33,7 @@ namespace Hire_Hop_Downloader
                 await LabourData.Load(myHHConn);
 
                 var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed=false, _open=false, _money_owed=false }, true);
-                var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x.Value));
+                var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x.Value)).ToArray();
 
                 var loadTasks = jobs.Select(x => x.CalculateCosts(myHHConn)).ToArray();
 
@@ -42,11 +42,14 @@ namespace Hire_Hop_Downloader
                 int i = 0;
                 foreach (Hire_Hop_Interface.Objects.Jobs j in jobs)
                 {
-                    Console.WriteLine($"{j.id}-- Total Cost: £{loadTasks[i].Result.totalCost}");
+                    j.costs = loadTasks[i].Result;
+                    Console.WriteLine($"{j.id}-- Total Cost: £{j.costs.totalCost}");
                     i++;
                 }
 
                 Console.WriteLine($"Finished Collecting {results.Count} Results");
+
+                File.WriteAllText("./data.json", JToken.FromObject(jobs).ToString());
             }
         }
 
