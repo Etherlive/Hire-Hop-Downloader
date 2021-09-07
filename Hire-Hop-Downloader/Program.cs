@@ -1,6 +1,7 @@
 ﻿using System;
 using Hire_Hop_Interface.Management;
 using Hire_Hop_Interface.Requests;
+using Newtonsoft.Json.Linq;
 
 namespace Hire_Hop_Downloader
 {
@@ -20,6 +21,13 @@ namespace Hire_Hop_Downloader
         static async void App()
         {
             
+
+            bool loggedin = await Authentication.Login(myHHConn, "odavies@etherlive.co.uk", "");
+
+            if (loggedin)
+            {
+                JObject job = await Jobs.GetJobData(myHHConn, "1131");
+            }
         }
     }
 }
