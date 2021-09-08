@@ -32,8 +32,10 @@ namespace Hire_Hop_Downloader
 
                 await LabourData.Load(myHHConn);
 
-                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = true, _open = false, _money_owed = true }, true);
+                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _money_owed = false }, true);
                 var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x.Value)).ToArray();
+
+                Console.WriteLine("Calculating Costs");
 
                 var loadTasks = jobs.Select(x => x.CalculateCosts(myHHConn)).ToArray();
 
@@ -43,11 +45,12 @@ namespace Hire_Hop_Downloader
                 foreach (Hire_Hop_Interface.Objects.Jobs j in jobs)
                 {
                     j.costs = loadTasks[i].Result;
-                    Console.WriteLine($"{j.id}-- Total Cost: £{j.costs.totalCost}");
+                    //Console.WriteLine($"{j.id}-- Total Cost: £{j.costs.totalCost}");
                     i++;
                 }
 
                 Console.WriteLine($"Finished Collecting {results.Count} Results");
+                Console.WriteLine("Writing Results To data.csv");
 
                 JSON_To_CSV.Converter.WriteConversion("./data.csv", JArray.FromObject(jobs));
 
