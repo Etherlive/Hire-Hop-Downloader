@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using JSON_To_CSV;
 
 namespace Hire_Hop_Downloader
 {
@@ -51,6 +50,8 @@ namespace Hire_Hop_Downloader
                 Console.WriteLine($"Finished Collecting {results.Count} Results");
 
                 JSON_To_CSV.Converter.WriteConversion("./data.csv", JArray.FromObject(jobs));
+
+                Console.WriteLine("Wrote Results to CSV");
             }
         }
 
