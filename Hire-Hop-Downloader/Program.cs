@@ -32,7 +32,7 @@ namespace Hire_Hop_Downloader
 
                 await LabourData.Load(myHHConn);
 
-                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _money_owed = false }, false);
+                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _search = false, _depot = -1, _status = "" }, true);
                 var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x)).ToArray();
 
                 Console.WriteLine("Calculating Costs");
