@@ -1,3 +1,6 @@
 [submodule "Hire-Hop-Interface-Library"]
 	path = Hire-Hop-Interface-Library
 	url = https://github.com/Jaminima/Hire-Hop-Interface-Library
+[submodule "JSON-To-CSV"]
+	path = JSON-To-CSV
+	url = https://github.com/Jaminima/JSON-To-CSV

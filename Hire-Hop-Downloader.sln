@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hire-Hop-Downloader", "Hire
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hire-Hop-Interface", "Hire-Hop-Interface-Library\Hire-Hop-Interface.csproj", "{5C66483E-C662-4505-A876-78326DD60F58}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSON-To-CSV", "JSON-To-CSV\JSON-To-CSV\JSON-To-CSV.csproj", "{10254A32-8214-446F-8984-A026A542175A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5C66483E-C662-4505-A876-78326DD60F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C66483E-C662-4505-A876-78326DD60F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C66483E-C662-4505-A876-78326DD60F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10254A32-8214-446F-8984-A026A542175A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10254A32-8214-446F-8984-A026A542175A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10254A32-8214-446F-8984-A026A542175A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10254A32-8214-446F-8984-A026A542175A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

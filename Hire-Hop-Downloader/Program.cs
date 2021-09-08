@@ -4,8 +4,9 @@ using Hire_Hop_Interface.Requests;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using JSON_To_CSV;
 
 namespace Hire_Hop_Downloader
 {
@@ -32,7 +33,7 @@ namespace Hire_Hop_Downloader
 
                 await LabourData.Load(myHHConn);
 
-                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed=false, _open=false, _money_owed=false }, true);
+                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = true, _open = false, _money_owed = true }, true);
                 var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x.Value)).ToArray();
 
                 var loadTasks = jobs.Select(x => x.CalculateCosts(myHHConn)).ToArray();
@@ -49,7 +50,7 @@ namespace Hire_Hop_Downloader
 
                 Console.WriteLine($"Finished Collecting {results.Count} Results");
 
-                File.WriteAllText("./data.json", JToken.FromObject(jobs).ToString());
+                JSON_To_CSV.Converter.WriteConversion("./data.csv", JArray.FromObject(jobs));
             }
         }
 
