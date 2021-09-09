@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using Newtonsoft.Json.Linq;
+﻿using Hire_Hop_Interface.Management;
 using Hire_Hop_Interface.Requests;
-using Hire_Hop_Interface.Management;
+using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Windows;
 
 namespace Downloader_UI
 {
@@ -24,19 +12,7 @@ namespace Downloader_UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            Error.Visibility = Visibility.Hidden;
-
-            if (GetLogin(out string uname, out string pword, out string code, out JObject login))
-            {
-                username.Text = uname;
-                password.Text = pword;
-                company.Text = code;
-            }
-        }
+        #region Methods
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -93,5 +69,25 @@ namespace Downloader_UI
             }
             return false;
         }
+
+        #endregion Methods
+
+        #region Constructors
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            Error.Visibility = Visibility.Hidden;
+
+            if (GetLogin(out string uname, out string pword, out string code, out JObject login))
+            {
+                username.Text = uname;
+                password.Text = pword;
+                company.Text = code;
+            }
+        }
+
+        #endregion Constructors
     }
 }

@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Newtonsoft.Json.Linq;
-using Hire_Hop_Interface.Requests;
+﻿using Hire_Hop_Interface.Management;
 using Hire_Hop_Interface.Objects;
-using Hire_Hop_Interface.Management;
-using System.Threading;
+using Hire_Hop_Interface.Requests;
+using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
-using Hire_Hop_Interface;
+using System.Threading;
+using System.Windows;
 
 namespace Downloader_UI
 {
@@ -24,19 +14,20 @@ namespace Downloader_UI
     /// </summary>
     public partial class Export : Window
     {
-        ClientConnection _client;
-        ControlWriter _writer;
+        #region Fields
 
-        public Export(ClientConnection client)
+        private ClientConnection _client;
+        private ControlWriter _writer;
+
+        private string f_name = "../data.csv";
+
+        #endregion Fields
+
+        #region Methods
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _client = client;
-            InitializeComponent();
-
-            _writer = new Downloader_UI.ControlWriter(LogText);
-            LogText.Width -= 15;
-
-            Console.SetOut(_writer);
-            Console.WriteLine($"Current File Location {f_name}");
+            new Thread(() => ExportData()).Start();
         }
 
         private async void ExportData()
@@ -47,7 +38,7 @@ namespace Downloader_UI
 
             Console.WriteLine("Fetching Search Fesults");
 
-            var results = await Search.GetAllResults(_client, new Search.SearchParams() { _closed = false, _open = false, _money_owed = false, _search = false, _depot=-1, _status="" });
+            var results = await Search.GetAllResults(_client, new Search.SearchParams() { _closed = false, _open = false, _money_owed = false, _search = false, _depot = -1, _status = "" });
 
             BulkAdditionalData.LoadExtraDetail(ref results, _client);
 
@@ -65,13 +56,6 @@ namespace Downloader_UI
             Console.WriteLine("Wrote Data Out! Finished!!");
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            new Thread(() => ExportData()).Start();
-        }
-
-        private string f_name = "../data.csv";
-
         private void SelectFile_Click(object sender, RoutedEventArgs e)
         {
             // Create OpenFileDialog
@@ -84,13 +68,30 @@ namespace Downloader_UI
 
             // Launch OpenFileDialog by calling ShowDialog method
             Nullable<bool> result = FileDlg.ShowDialog();
-            // Get the selected file name and display in a TextBox.
-            // Load content of file in a TextBlock
+            // Get the selected file name and display in a TextBox. Load content of file in a TextBlock
             if (result == true)
             {
                 f_name = FileDlg.FileName;
                 Console.WriteLine($"Selected File Location {f_name}");
             }
         }
+
+        #endregion Methods
+
+        #region Constructors
+
+        public Export(ClientConnection client)
+        {
+            _client = client;
+            InitializeComponent();
+
+            _writer = new Downloader_UI.ControlWriter(LogText);
+            LogText.Width -= 15;
+
+            Console.SetOut(_writer);
+            Console.WriteLine($"Current File Location {f_name}");
+        }
+
+        #endregion Constructors
     }
 }
