@@ -33,11 +33,13 @@ namespace Hire_Hop_Downloader
 
                 var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _search = false, _depot = -1, _status = "" });
 
-                results = BulkAdditionalData.LoadExtraDetail(results, myHHConn);
+                //BulkAdditionalData.LoadExtraDetail(ref results, myHHConn);
 
                 var jobs = BulkAdditionalData.SearchToJob(results);
 
-                BulkAdditionalData.CalculateCosts(ref jobs, myHHConn);
+                //BulkAdditionalData.CalculateCosts(ref jobs, myHHConn);
+
+                BulkAdditionalData.CalculateBilling(ref jobs, myHHConn);
 
                 Console.WriteLine($"Finished Collecting {results.Length} Results");
                 Console.WriteLine("Writing Results To data.csv");
