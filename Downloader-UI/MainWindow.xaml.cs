@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using Hire_Hop_Interface.Requests;
+using Hire_Hop_Interface.Management;
 
 namespace Downloader_UI
 {
@@ -23,13 +27,66 @@ namespace Downloader_UI
         public MainWindow()
         {
             InitializeComponent();
+
+            Error.Visibility = Visibility.Hidden;
+
+            if (GetLogin(out string uname, out string pword, out string code, out JObject login))
+            {
+                username.Text = uname;
+                password.Text = pword;
+                company.Text = code;
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            ClientConnection myHHConn = new ClientConnection();
+
             string uname = username.Text,
                 pword = password.Text,
                 code = company.Text;
+
+            Login.Content = "Logging In ...";
+
+            bool loggedin = await Authentication.Login(myHHConn, uname, pword, code);
+
+            if (loggedin)
+            {
+                Login.Content = "Logged In!";
+                GetLogin(out string u, out string p, out string w, out JObject login);
+                File.WriteAllText("./login.json", login.ToString());
+            }
+            else
+            {
+                Error.Visibility = Visibility.Visible;
+                Error.Content = "Log In Failed!";
+                Login.Content = "Log In Again";
+            }
+        }
+
+        private bool GetLogin(out string uname, out string pword, out string word, out JObject login)
+        {
+            uname = ""; pword = ""; word = ""; login = new JObject();
+            if (File.Exists("./login.json"))
+            {
+                string content = File.ReadAllText("./login.json");
+                login = JObject.Parse(content);
+
+                uname = login["username"].ToString();
+                pword = login["password"].ToString();
+                word = login["companyCode"].ToString();
+
+                Console.WriteLine("Loaded details from file");
+                return true;
+            }
+            else
+            {
+                login = new JObject();
+                login["username"] = username.Text;
+                login["password"] = password.Text;
+                login["companyCode"] = company.Text;
+            }
+            return false;
         }
     }
 }

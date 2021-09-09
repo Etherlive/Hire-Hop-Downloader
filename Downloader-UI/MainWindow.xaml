@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Downloader_UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="265" Width="317">
+        Title="MainWindow" Height="265" Width="455">
     <Grid Margin="0,0,0,-6">
         <Label Content="Username&#xD;&#xA;" HorizontalAlignment="Left" Margin="19,90,0,0" VerticalAlignment="Top" Width="73" Height="27"/>
         <Label Content="Company Code&#xA;" HorizontalAlignment="Left" Margin="19,154,0,0" VerticalAlignment="Top" Width="111" Height="27"/>
         <Label Content="Password&#xD;&#xA;&#xA;" HorizontalAlignment="Left" Margin="19,122,0,0" VerticalAlignment="Top" Width="73" Height="27"/>
-        <TextBox x:Name="username" HorizontalAlignment="Left" Margin="159,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="password" HorizontalAlignment="Left" Margin="159,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="company" HorizontalAlignment="Left" Margin="159,159,0,0" Text="ELTH" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="159,195,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
+        <TextBox x:Name="username" HorizontalAlignment="Left" Margin="130,95,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="282" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="password" HorizontalAlignment="Left" Margin="130,127,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="282" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="company" HorizontalAlignment="Left" Margin="130,159,0,0" Text="ELTH" TextWrapping="NoWrap" VerticalAlignment="Top" Width="282" HorizontalContentAlignment="Right"/>
+        <Button x:Name="Login" Content="Login" HorizontalAlignment="Left" Margin="292,195,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
         <Label Content="PMY - Hire Hop Exporter&#xD;&#xA;" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="240" FontSize="20"/>
+        <Label x:Name="Error" Content="Error" HorizontalAlignment="Left" Margin="19,192,0,0" VerticalAlignment="Top" Foreground="Red"/>
 
     </Grid>
 </Window>
