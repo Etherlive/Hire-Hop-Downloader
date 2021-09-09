@@ -19,13 +19,14 @@ namespace Hire_Hop_Downloader
 
         private static async void App()
         {
-            GetLogin(out string username, out string password);
+            GetLogin(out string username, out string password, out JObject login);
 
             Console.WriteLine("Performing log in");
             bool loggedin = await Authentication.Login(myHHConn, username, password);
 
             if (loggedin)
             {
+                File.WriteAllText("./login.json", login.ToString());
                 Console.WriteLine("Logged in");
 
                 await LabourData.Load(myHHConn);
@@ -47,16 +48,17 @@ namespace Hire_Hop_Downloader
             }
             else
             {
-                Console.WriteLine("Log In Failed");
+                Console.WriteLine("Log In Failed!\n\n");
+                App();
             }
         }
 
-        private static void GetLogin(out string username, out string password)
+        private static void GetLogin(out string username, out string password, out JObject login)
         {
             if (File.Exists("./login.json"))
             {
                 string content = File.ReadAllText("./login.json");
-                JObject login = JObject.Parse(content);
+                login = JObject.Parse(content);
 
                 username = login["username"].ToString();
                 password = login["password"].ToString();
@@ -70,10 +72,9 @@ namespace Hire_Hop_Downloader
                 Console.WriteLine("Enter Hire Hop Password: ");
                 password = Console.ReadLine();
 
-                JObject login = new JObject();
+                login = new JObject();
                 login["username"] = username;
                 login["password"] = password;
-                File.WriteAllText("./login.json", login.ToString());
             }
         }
 
