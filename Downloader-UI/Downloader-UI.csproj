@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hire-Hop-Downloader\Hire-Hop-Downloader.csproj" />
     <ProjectReference Include="..\Hire-Hop-Interface-Library\Hire-Hop-Interface.csproj" />
     <ProjectReference Include="..\JSON-To-CSV\JSON-To-CSV\JSON-To-CSV.csproj" />
   </ItemGroup>
