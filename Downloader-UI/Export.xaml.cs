@@ -33,8 +33,10 @@ namespace Downloader_UI
             InitializeComponent();
 
             _writer = new Downloader_UI.ControlWriter(LogText);
+            LogText.Width -= 15;
 
             Console.SetOut(_writer);
+            Console.WriteLine($"Current File Location {f_name}");
         }
 
         private async void ExportData()
@@ -56,14 +58,39 @@ namespace Downloader_UI
             BulkAdditionalData.CalculateBilling(ref jobs, _client);
 
             Console.WriteLine($"Finished Collecting {results.Length} Results");
-            Console.WriteLine("Writing Results To data.csv");
+            Console.WriteLine($"Writing Results To {f_name}");
 
-            JSON_To_CSV.Converter.WriteConversion("../data.csv", JArray.FromObject(jobs));
+            JSON_To_CSV.Converter.WriteConversion(f_name, JArray.FromObject(jobs));
+
+            Console.WriteLine("Wrote Data Out! Finished!!");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             new Thread(() => ExportData()).Start();
+        }
+
+        private string f_name = "../data.csv";
+
+        private void SelectFile_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog
+            Microsoft.Win32.SaveFileDialog FileDlg = new Microsoft.Win32.SaveFileDialog();
+
+            FileDlg.AddExtension = true;
+            FileDlg.DefaultExt = ".csv";
+            FileDlg.FileName = "data";
+            FileDlg.InitialDirectory = Directory.GetCurrentDirectory();
+
+            // Launch OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = FileDlg.ShowDialog();
+            // Get the selected file name and display in a TextBox.
+            // Load content of file in a TextBlock
+            if (result == true)
+            {
+                f_name = FileDlg.FileName;
+                Console.WriteLine($"Selected File Location {f_name}");
+            }
         }
     }
 }

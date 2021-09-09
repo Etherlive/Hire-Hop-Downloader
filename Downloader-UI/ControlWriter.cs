@@ -18,7 +18,7 @@ namespace Downloader_UI
         {
             textbox.Dispatcher.Invoke(() =>
             {
-                textbox.AppendText(value.ToString());
+                textbox.AppendText(value.ToString().Replace("\n",""));
                 textbox.ScrollToEnd();
             });
         }
@@ -27,7 +27,7 @@ namespace Downloader_UI
         {
             textbox.Dispatcher.Invoke(() =>
             {
-                textbox.AppendText(value);
+                textbox.AppendText(value.Replace("\n", ""));
                 textbox.ScrollToEnd();
             });
         }

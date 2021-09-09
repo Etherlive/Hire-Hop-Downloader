@@ -5,16 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Downloader_UI"
         mc:Ignorable="d"
-        Title="Export" Height="490" Width="676">
-    <Grid>
-        <Button Content="EXPORT" HorizontalAlignment="Left" VerticalAlignment="Top" Height="55" Width="166" FontSize="20" Click="Button_Click" Margin="21,388,0,0"/>
-        <RichTextBox x:Name="LogText" Margin="229,33,52,31" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        Title="Export" Height="557" Width="645">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="213*"/>
+            <RowDefinition Height="37*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="323*"/>
+            <ColumnDefinition Width="322*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Export" HorizontalAlignment="Right" VerticalAlignment="Top" Height="33" Width="136" FontSize="20" Click="Button_Click" Margin="0,33,10,0" Grid.Column="1" Grid.Row="1"/>
+        <RichTextBox x:Name="LogText" Margin="10,20,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Height="415" VerticalAlignment="Top" HorizontalAlignment="Left" Width="625" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
+        <Button x:Name="ExportFile" Content="Select File" HorizontalAlignment="Right" VerticalAlignment="Top" Height="33" Width="151" FontSize="20" Click="SelectFile_Click" Margin="0,33,161,0" Grid.Column="1" Grid.Row="1"/>
 
     </Grid>
 </Window>
