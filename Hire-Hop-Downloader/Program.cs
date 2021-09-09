@@ -4,8 +4,6 @@ using Hire_Hop_Interface.Requests;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Hire_Hop_Downloader
 {
@@ -32,29 +30,24 @@ namespace Hire_Hop_Downloader
 
                 await LabourData.Load(myHHConn);
 
-                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _search = false, _depot = -1, _status = "" }, true);
-                var jobs = results.Select(x => new Hire_Hop_Interface.Objects.Jobs(x)).ToArray();
+                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _search = false, _depot = -1, _status = "" });
 
-                Console.WriteLine("Calculating Costs");
+                results = BulkAdditionalData.LoadExtraDetail(results, myHHConn);
 
-                var loadTasks = jobs.Select(x => x.CalculateCosts(myHHConn)).ToArray();
+                var jobs = BulkAdditionalData.SearchToJob(results);
 
-                Task.WaitAll(loadTasks);
-
-                int i = 0;
-                foreach (Hire_Hop_Interface.Objects.Jobs j in jobs)
-                {
-                    j.costs = loadTasks[i].Result;
-                    //Console.WriteLine($"{j.id}-- Total Cost: £{j.costs.totalCost}");
-                    i++;
-                }
+                BulkAdditionalData.CalculateCosts(ref jobs, myHHConn);
 
                 Console.WriteLine($"Finished Collecting {results.Length} Results");
                 Console.WriteLine("Writing Results To data.csv");
 
-                JSON_To_CSV.Converter.WriteConversion("./data.csv", JArray.FromObject(jobs));
+                JSON_To_CSV.Converter.WriteConversion("../data.csv", JArray.FromObject(jobs));
 
                 Console.WriteLine("Wrote Results to CSV");
+            }
+            else
+            {
+                Console.WriteLine("Log In Failed");
             }
         }
 
@@ -72,9 +65,9 @@ namespace Hire_Hop_Downloader
             }
             else
             {
-                Console.WriteLine("Enter Username: ");
+                Console.WriteLine("Enter Hire Hop Username: ");
                 username = Console.ReadLine();
-                Console.WriteLine("Enter Password: ");
+                Console.WriteLine("Enter Hire Hop Password: ");
                 password = Console.ReadLine();
 
                 JObject login = new JObject();
