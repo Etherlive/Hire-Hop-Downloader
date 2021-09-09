@@ -40,6 +40,8 @@ namespace Downloader_UI
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            Error.Visibility = Visibility.Hidden;
+
             ClientConnection myHHConn = new ClientConnection();
 
             string uname = username.Text,
@@ -55,6 +57,9 @@ namespace Downloader_UI
                 Login.Content = "Logged In!";
                 GetLogin(out string u, out string p, out string w, out JObject login);
                 File.WriteAllText("./login.json", login.ToString());
+                Export expWindow = new Export(myHHConn);
+                expWindow.Show();
+                this.Hide();
             }
             else
             {
