@@ -32,11 +32,11 @@ namespace Downloader_UI
 
         private async void ExportData()
         {
-            Console.WriteLine("Pre Loading Data");
+            Console.WriteLine("Pre Loading Data ...");
 
             await LabourData.Load(_client);
 
-            Console.WriteLine("Fetching Search Fesults");
+            Console.WriteLine("Fetching Search Fesults ...");
 
             var results = await Search.GetAllResults(_client, new Search.SearchParams() { _closed = false, _open = false, _money_owed = false, _search = false, _depot = -1, _status = "" });
 
@@ -44,9 +44,11 @@ namespace Downloader_UI
 
             var jobs = BulkAdditionalData.SearchToJob(results);
 
-            BulkAdditionalData.CalculateCosts(ref jobs, _client);
-
             BulkAdditionalData.CalculateBilling(ref jobs, _client);
+
+            BulkAdditionalData.SetLastModified(ref jobs, _client);
+
+            BulkAdditionalData.CalculateCosts(ref jobs, _client);
 
             Console.WriteLine($"Finished Collecting {results.Length} Results");
             Console.WriteLine($"Writing Results To {f_name}");
