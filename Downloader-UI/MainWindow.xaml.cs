@@ -31,7 +31,7 @@ namespace Downloader_UI
             if (loggedin)
             {
                 Login.Content = "Logged In!";
-                GetLogin(out string u, out string p, out string w, out JObject login);
+                GetLoginFromInput(out JObject login);
                 File.WriteAllText("./login.json", login.ToString());
                 Export expWindow = new Export(myHHConn);
                 expWindow.Show();
@@ -60,14 +60,15 @@ namespace Downloader_UI
                 Console.WriteLine("Loaded details from file");
                 return true;
             }
-            else
-            {
-                login = new JObject();
-                login["username"] = username.Text;
-                login["password"] = password.Text;
-                login["companyCode"] = company.Text;
-            }
             return false;
+        }
+
+        private void GetLoginFromInput(out JObject login)
+        {
+            login = new JObject();
+            login["username"] = username.Text;
+            login["password"] = RememberPassword.IsChecked.Value ? password.Text : "";
+            login["companyCode"] = company.Text;
         }
 
         #endregion Methods
@@ -85,6 +86,8 @@ namespace Downloader_UI
                 username.Text = uname;
                 password.Text = pword;
                 company.Text = code;
+
+                if (pword.Length > 0) RememberPassword.IsChecked = true;
             }
         }
 
