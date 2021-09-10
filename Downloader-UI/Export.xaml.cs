@@ -25,13 +25,26 @@ namespace Downloader_UI
 
         #region Methods
 
+        Thread data_export_thread;
+        bool IsExporting = false;
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new Thread(() => ExportData()).Start();
+            if (data_export_thread == null) data_export_thread = new Thread(() => ExportData());
+            if (!IsExporting)
+            {
+                data_export_thread.Start();
+            }
+            else
+            {
+                Console.WriteLine("Cannot Start, Already Running");
+            }
         }
 
         private async void ExportData()
         {
+            if (IsExporting) return;
+            IsExporting = true;
             Console.WriteLine("Pre Loading Data ...");
 
             await LabourData.Load(_client);
@@ -58,6 +71,7 @@ namespace Downloader_UI
             Console.WriteLine("Wrote Data Out! Finished!!");
 
             this.Dispatcher.Invoke(()=> { finished_export_page.Show(); });
+            IsExporting = false;
         }
 
         private FinishedExport finished_export_page = new FinishedExport();
