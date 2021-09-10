@@ -56,7 +56,11 @@ namespace Downloader_UI
             JSON_To_CSV.Converter.WriteConversion(f_name, JArray.FromObject(jobs));
 
             Console.WriteLine("Wrote Data Out! Finished!!");
+
+            this.Dispatcher.Invoke(()=> { finished_export_page.Show(); });
         }
+
+        private FinishedExport finished_export_page = new FinishedExport();
 
         private void SelectFile_Click(object sender, RoutedEventArgs e)
         {
