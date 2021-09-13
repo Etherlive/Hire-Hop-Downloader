@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows;
 
 namespace Downloader_UI
@@ -39,10 +40,11 @@ namespace Downloader_UI
                     _is_late = search_late.IsChecked.Value,
                     _money_owed = search_owes.IsChecked.Value,
 
-                    _search = !search_ignore_search.IsChecked.Value
+                    _search = !search_ignore_search.IsChecked.Value,
+                    _status = ""
                 };
 
-                switch (search_depot.SelectedValue)
+                switch (((ComboBoxItem)search_depot.SelectedValue).Content)
                 {
                     case "Any":
                         @params._depot = -1;
