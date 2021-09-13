@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Downloader_UI
 {
@@ -40,9 +41,20 @@ namespace Downloader_UI
                     _is_late = search_late.IsChecked.Value,
                     _money_owed = search_owes.IsChecked.Value,
 
-                    _search = !search_ignore_search.IsChecked.Value,
-                    _status = ""
+                    _search = !search_ignore_search.IsChecked.Value
                 };
+
+                List<string> status = new List<string>();
+
+                for (int i = 0; i < search_status.Items.Count; i++)
+                {
+                    if (((CheckBox)search_status.Items[i]).IsChecked.Value)
+                    {
+                        status.Add(i.ToString());
+                    }
+                }
+
+                @params._status = String.Join(',', status);
 
                 switch (((ComboBoxItem)search_depot.SelectedValue).Content)
                 {

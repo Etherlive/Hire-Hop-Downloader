@@ -17,7 +17,7 @@
             <ColumnDefinition Width="322*" />
         </Grid.ColumnDefinitions>
         <Button Content="Export" HorizontalAlignment="Left" VerticalAlignment="Center" Height="53" Width="128" FontSize="20" Click="Button_Click" Margin="172,0,0,0" Grid.Column="1" Grid.Row="2" />
-        <RichTextBox x:Name="LogText" Margin="10,20,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Height="416" VerticalAlignment="Top" HorizontalAlignment="Left" Width="625" Grid.ColumnSpan="2">
+        <RichTextBox x:Name="LogText" Margin="10,0,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Height="408" VerticalAlignment="Center" HorizontalAlignment="Left" Width="625" Grid.ColumnSpan="2">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="" />
@@ -40,15 +40,26 @@
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Label Content="Depot" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="31" Width="54" FontSize="16"/>
+            <ComboBox x:Name="search_depot" HorizontalAlignment="Left" Margin="69,12,0,0" VerticalAlignment="Top" Width="93" SelectedIndex="0" FontSize="16">
+                <ComboBoxItem Content="Any"/>
+                <ComboBoxItem Content="EMEA"/>
+                <ComboBoxItem Content="APAC"/>
+                <ComboBoxItem Content="USA"/>
+            </ComboBox>
+            <ComboBox x:Name="search_status" HorizontalAlignment="Left" Margin="69,50,0,0" VerticalAlignment="Top" Width="92" FontSize="16">
+                <CheckBox Content="Enquiry"/>
+                <CheckBox Content="Provisional"/>
+                <CheckBox Content="Confirmed"/>
+                <CheckBox Content="Prepped"/>
+                <CheckBox Content="Part Dispatched"/>
+                <CheckBox Content="Dispatched"/>
+                <CheckBox Content="Returned Incomplete"/>
+                <CheckBox Content="Returned"/>
+                <CheckBox Content="Requires Attention"/>
+            </ComboBox>
+            <Label Content="Status" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Height="31" Width="54" FontSize="16"/>
         </Grid>
-        <Label Content="Depot" HorizontalAlignment="Left" Margin="153,76,0,0" VerticalAlignment="Top" Height="31" Width="54" Grid.Row="1" FontSize="16"/>
-        <ComboBox x:Name="search_depot" HorizontalAlignment="Left" Margin="212,78,0,0" VerticalAlignment="Top" Width="93" SelectedIndex="0" Grid.Row="1" FontSize="16">
-            <ComboBoxItem Content="Any"/>
-            <ComboBoxItem Content="EMEA"/>
-            <ComboBoxItem Content="APAC"/>
-            <ComboBoxItem Content="USA"/>
-        </ComboBox>
     </Grid>
 </Window>
