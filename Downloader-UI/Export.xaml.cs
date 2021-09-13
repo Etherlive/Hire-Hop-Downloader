@@ -30,9 +30,38 @@ namespace Downloader_UI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (data_export_thread == null) data_export_thread = new Thread(() => ExportData());
             if (!IsExporting)
             {
+                Search.SearchParams @params = new Search.SearchParams()
+                {
+                    _open = search_open_jobs.IsChecked.Value,
+                    _closed = search_closed_jobs.IsChecked.Value,
+                    _is_late = search_late.IsChecked.Value,
+                    _money_owed = search_owes.IsChecked.Value,
+
+                    _search = !search_ignore_search.IsChecked.Value
+                };
+
+                switch (search_depot.SelectedValue)
+                {
+                    case "Any":
+                        @params._depot = -1;
+                        break;
+
+                    case "EMEA":
+                        @params._depot = 1;
+                        break;
+
+                    case "APAC":
+                        @params._depot = 4;
+                        break;
+
+                    case "USA":
+                        @params._depot = 5;
+                        break;
+                }
+
+                data_export_thread = new Thread(() => ExportData(@params));
                 data_export_thread.Start();
             }
             else
@@ -41,7 +70,7 @@ namespace Downloader_UI
             }
         }
 
-        private async void ExportData()
+        private async void ExportData(Search.SearchParams @params)
         {
             if (IsExporting) return;
             IsExporting = true;
@@ -51,7 +80,7 @@ namespace Downloader_UI
 
             Console.WriteLine("Fetching Search Fesults ...");
 
-            var results = await Search.GetAllResults(_client, new Search.SearchParams() { _closed = false, _open = false, _money_owed = false, _search = false, _depot = -1, _status = "" });
+            var results = await Search.GetAllResults(_client, @params);
 
             BulkAdditionalData.LoadExtraDetail(ref results, _client);
 
