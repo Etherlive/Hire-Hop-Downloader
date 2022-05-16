@@ -14,45 +14,49 @@ namespace Hire_Hop_Downloader
     {
         #region Fields
 
-        private static CookieConnection myHHConn = new CookieConnection();
+        private static CookieConnection _client = new CookieConnection();
 
         #endregion Fields
 
         #region Methods
+
+        const string f_name = "../data.csv";
 
         private static async void App()
         {
             GetLogin(out string username, out string password, out string companyCode, out JObject login);
 
             Console.WriteLine("Performing log in");
-            bool loggedin = await Authentication.Login(myHHConn, username, password, companyCode);
+            bool loggedin = await Authentication.Login(_client, username, password, companyCode);
 
             if (loggedin)
             {
                 File.WriteAllText("./login.json", login.ToString());
                 Console.WriteLine("Logged in");
 
-                var costs = await DefaultCost.Search(myHHConn);
+                Console.WriteLine("Pre Loading Data ...");
 
-                var results = await SearchResult.SearchForAll(new SearchResult.SearchOptions() { closed = false, open = false, search = false, depot = -1, status = "" }, myHHConn);
+                var labour_costs = await DefaultCost.GetAllLabourCosts(_client);
 
-                //BulkAdditionalData.LoadExtraDetail(ref results, myHHConn);
+                Console.WriteLine("Fetching Jobs ...");
 
-                var t_jobs = results.results.Select(x => x.GetJob(myHHConn)).ToArray();
+                var results = await SearchResult.SearchForAll(new SearchResult.SearchOptions() { closed = false, open = false, search = false, depot = -1, status = "" }, _client);
+
+                var t_jobs = results.results.Select(x => x.GetJob(_client)).ToArray();
                 Task.WaitAll(t_jobs);
-                var jobs = t_jobs.Select(x=>new JobWithMisc(x.Result)).ToArray();
+                var jobs = t_jobs.Select(x => new JobWithMisc(x.Result)).ToArray();
 
-                //BulkAdditionalData.CalculateCosts(ref jobs, myHHConn);
+                Console.WriteLine($"Finished Collecting {jobs.Length} Jobs");
+                Console.WriteLine("Now Loading Associated Data");
 
-                var t_bill = jobs.Select(x => x.LoadMisc(myHHConn)).ToArray();
-                Task.WaitAll(t_bill);
+                var load_misc_t = jobs.Select(x => x.LoadMisc(_client, labour_costs.results)).ToArray();
+                Task.WaitAll(load_misc_t);
 
-                Console.WriteLine($"Finished Collecting {jobs.Length} Results");
-                Console.WriteLine("Writing Results To data.csv");
+                Console.WriteLine($"Writing Results To {f_name}");
 
-                JSON_To_CSV.Converter.WriteConversion("../data.csv", JArray.FromObject(jobs));
+                JSON_To_CSV.Converter.WriteConversion(f_name, JArray.FromObject(jobs));
 
-                Console.WriteLine("Wrote Results to CSV");
+                Console.WriteLine("Wrote Data Out! Finished!!");
             }
             else
             {

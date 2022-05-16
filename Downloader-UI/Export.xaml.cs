@@ -98,7 +98,7 @@ namespace Downloader_UI
             IsExporting = true;
             Console.WriteLine("Pre Loading Data ...");
 
-            var costs = await DefaultCost.Search(_client);
+            var labour_costs = await DefaultCost.GetAllLabourCosts(_client);
 
             Console.WriteLine("Fetching Jobs ...");
 
@@ -111,12 +111,8 @@ namespace Downloader_UI
             Console.WriteLine($"Finished Collecting {jobs.Length} Jobs");
             Console.WriteLine("Now Loading Associated Data");
 
-            var t_misc = jobs.Select(x => x.LoadMisc(_client)).ToArray();
-            Task.WaitAll(t_misc);
-
-            //BulkAdditionalData.SetLastModified(ref jobs, _client);
-
-            //BulkAdditionalData.CalculateCosts(ref jobs, _client);
+            var load_misc_t = jobs.Select(x => x.LoadMisc(_client, labour_costs.results)).ToArray();
+            Task.WaitAll(load_misc_t);
 
             Console.WriteLine($"Writing Results To {f_name}");
 
