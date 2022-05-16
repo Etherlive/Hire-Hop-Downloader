@@ -25,7 +25,7 @@
             </FlowDocument>
         </RichTextBox>
         <Button x:Name="ExportFile" Content="Select File" HorizontalAlignment="Left" VerticalAlignment="Center" Height="53" Width="143" FontSize="20" Click="SelectFile_Click" Margin="10,0,0,0" Grid.Column="1" Grid.Row="2" />
-        <RichTextBox Grid.Row="2" Height="53" VerticalAlignment="Center" HorizontalAlignment="Center" Width="303">
+        <RichTextBox Grid.Row="2" Height="53" VerticalAlignment="Center" HorizontalAlignment="Center" Width="303" IsReadOnly="True">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="This Application Has The Potential To Expose Confidential Information. Do Not Use This Program For Intentions That Violates Any Privacy Restrictions!" />
