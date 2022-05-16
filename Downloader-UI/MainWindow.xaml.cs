@@ -1,5 +1,5 @@
-﻿using Hire_Hop_Interface.Management;
-using Hire_Hop_Interface.Requests;
+﻿using Hire_Hop_Interface.Interface;
+using Hire_Hop_Interface.Interface.Connections;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
@@ -18,7 +18,7 @@ namespace Downloader_UI
         {
             Error.Visibility = Visibility.Hidden;
 
-            ClientConnection myHHConn = new ClientConnection();
+            CookieConnection myHHConn = new CookieConnection();
 
             string uname = username.Text,
                 pword = password.Text,

@@ -1,9 +1,12 @@
-﻿using Hire_Hop_Interface.Management;
-using Hire_Hop_Interface.Objects;
-using Hire_Hop_Interface.Requests;
+﻿using Hire_Hop_Interface.Interface.Connections;
 using Newtonsoft.Json.Linq;
 using System;
+using Hire_Hop_Interface.Interface;
+using Hire_Hop_Interface.Objects;
+using Hire_Hop_Interface.Objects.JobProject;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hire_Hop_Downloader
 {
@@ -11,7 +14,7 @@ namespace Hire_Hop_Downloader
     {
         #region Fields
 
-        private static ClientConnection myHHConn = new ClientConnection();
+        private static CookieConnection myHHConn = new CookieConnection();
 
         #endregion Fields
 
@@ -29,19 +32,22 @@ namespace Hire_Hop_Downloader
                 File.WriteAllText("./login.json", login.ToString());
                 Console.WriteLine("Logged in");
 
-                await LabourData.Load(myHHConn);
+                var costs = await DefaultCost.Search(myHHConn);
 
-                var results = await Search.GetAllResults(myHHConn, new Search.SearchParams() { _closed = false, _open = false, _search = false, _depot = -1, _status = "" });
+                var results = await SearchResult.SearchForAll(new SearchResult.SearchOptions() { closed = false, open = false, search = false, depot = -1, status = "" }, myHHConn);
 
                 //BulkAdditionalData.LoadExtraDetail(ref results, myHHConn);
 
-                var jobs = BulkAdditionalData.SearchToJob(results);
+                var t_jobs = results.results.Select(x => x.GetJob(myHHConn)).ToArray();
+                Task.WaitAll(t_jobs);
+                var jobs = t_jobs.Select(x=>new JobWithMisc(x.Result)).ToArray();
 
                 //BulkAdditionalData.CalculateCosts(ref jobs, myHHConn);
 
-                BulkAdditionalData.CalculateBilling(ref jobs, myHHConn);
+                var t_bill = jobs.Select(x => x.LoadMisc(myHHConn)).ToArray();
+                Task.WaitAll(t_bill);
 
-                Console.WriteLine($"Finished Collecting {results.Length} Results");
+                Console.WriteLine($"Finished Collecting {jobs.Length} Results");
                 Console.WriteLine("Writing Results To data.csv");
 
                 JSON_To_CSV.Converter.WriteConversion("../data.csv", JArray.FromObject(jobs));

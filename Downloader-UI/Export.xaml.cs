@@ -1,6 +1,5 @@
-﻿using Hire_Hop_Interface.Management;
-using Hire_Hop_Interface.Objects;
-using Hire_Hop_Interface.Requests;
+﻿using Hire_Hop_Interface.Objects;
+using Hire_Hop_Interface.Interface.Connections;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
@@ -8,6 +7,15 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows;
 using System.Collections.Generic;
+using Hire_Hop_Interface.Interface.Connections;
+using Newtonsoft.Json.Linq;
+using System;
+using Hire_Hop_Interface.Interface;
+using Hire_Hop_Interface.Objects;
+using Hire_Hop_Interface.Objects.JobProject;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Downloader_UI
 {
@@ -18,7 +26,7 @@ namespace Downloader_UI
     {
         #region Fields
 
-        private ClientConnection _client;
+        private CookieConnection _client;
         private ControlWriter _writer;
 
         private string f_name = "../data.csv";
@@ -34,14 +42,14 @@ namespace Downloader_UI
         {
             if (!IsExporting)
             {
-                Search.SearchParams @params = new Search.SearchParams()
+                SearchResult.SearchOptions @params = new SearchResult.SearchOptions()
                 {
-                    _open = search_open_jobs.IsChecked.Value,
-                    _closed = search_closed_jobs.IsChecked.Value,
-                    _is_late = search_late.IsChecked.Value,
-                    _money_owed = search_owes.IsChecked.Value,
+                    open = search_open_jobs.IsChecked.Value,
+                    closed = search_closed_jobs.IsChecked.Value,
+                    is_late = search_late.IsChecked.Value,
+                    money_owed = search_owes.IsChecked.Value,
 
-                    _search = !search_ignore_search.IsChecked.Value
+                    search = !search_ignore_search.IsChecked.Value
                 };
 
                 List<string> status = new List<string>();
@@ -54,24 +62,24 @@ namespace Downloader_UI
                     }
                 }
 
-                @params._status = String.Join(',', status);
+                @params.status = String.Join(',', status);
 
                 switch (((ComboBoxItem)search_depot.SelectedValue).Content)
                 {
                     case "Any":
-                        @params._depot = -1;
+                        @params.depot = -1;
                         break;
 
                     case "EMEA":
-                        @params._depot = 1;
+                        @params.depot = 1;
                         break;
 
                     case "APAC":
-                        @params._depot = 4;
+                        @params.depot = 4;
                         break;
 
                     case "USA":
-                        @params._depot = 5;
+                        @params.depot = 5;
                         break;
                 }
 
@@ -84,29 +92,32 @@ namespace Downloader_UI
             }
         }
 
-        private async void ExportData(Search.SearchParams @params)
+        private async void ExportData(SearchResult.SearchOptions @params)
         {
             if (IsExporting) return;
             IsExporting = true;
             Console.WriteLine("Pre Loading Data ...");
 
-            await LabourData.Load(_client);
+            var costs = await DefaultCost.Search(_client);
 
-            Console.WriteLine("Fetching Search Fesults ...");
+            Console.WriteLine("Fetching Jobs ...");
 
-            var results = await Search.GetAllResults(_client, @params);
+            var results = await SearchResult.SearchForAll(@params, _client);
 
-            BulkAdditionalData.LoadExtraDetail(ref results, _client);
+            var t_jobs = results.results.Select(x => x.GetJob(_client)).ToArray();
+            Task.WaitAll(t_jobs);
+            var jobs = t_jobs.Select(x => new JobWithMisc(x.Result)).ToArray();
 
-            var jobs = BulkAdditionalData.SearchToJob(results);
+            Console.WriteLine($"Finished Collecting {jobs.Length} Jobs");
+            Console.WriteLine("Now Loading Associated Data");
 
-            BulkAdditionalData.CalculateBilling(ref jobs, _client);
+            var t_misc = jobs.Select(x => x.LoadMisc(_client)).ToArray();
+            Task.WaitAll(t_misc);
 
-            BulkAdditionalData.SetLastModified(ref jobs, _client);
+            //BulkAdditionalData.SetLastModified(ref jobs, _client);
 
-            BulkAdditionalData.CalculateCosts(ref jobs, _client);
+            //BulkAdditionalData.CalculateCosts(ref jobs, _client);
 
-            Console.WriteLine($"Finished Collecting {results.Length} Results");
             Console.WriteLine($"Writing Results To {f_name}");
 
             JSON_To_CSV.Converter.WriteConversion(f_name, JArray.FromObject(jobs));
@@ -143,7 +154,7 @@ namespace Downloader_UI
 
         #region Constructors
 
-        public Export(ClientConnection client)
+        public Export(CookieConnection client)
         {
             _client = client;
             InitializeComponent();
