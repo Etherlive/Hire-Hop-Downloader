@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <RootNamespace>Downloader_UI</RootNamespace>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hire-Hop-Interface-Library\Hire-Hop-Interface.csproj" />
+    <ProjectReference Include="..\Hire-Hop-Interface-Library\Hire-Hop-Interface\Hire-Hop-Interface.csproj" />
     <ProjectReference Include="..\JSON-To-CSV\JSON-To-CSV\JSON-To-CSV.csproj" />
   </ItemGroup>
 

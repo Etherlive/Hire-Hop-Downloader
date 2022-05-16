@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hire-Hop-Downloader", "Hire-Hop-Downloader\Hire-Hop-Downloader.csproj", "{9EF1BE03-43D9-45B4-8AC6-D5E5524F25F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hire-Hop-Interface", "Hire-Hop-Interface-Library\Hire-Hop-Interface.csproj", "{5C66483E-C662-4505-A876-78326DD60F58}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSON-To-CSV", "JSON-To-CSV\JSON-To-CSV\JSON-To-CSV.csproj", "{10254A32-8214-446F-8984-A026A542175A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downloader-UI", "Downloader-UI\Downloader-UI.csproj", "{0A8BFEE3-3DD0-4645-920F-707E6F5DAC49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Downloader-UI", "Downloader-UI\Downloader-UI.csproj", "{0A8BFEE3-3DD0-4645-920F-707E6F5DAC49}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hire-Hop-Interface", "Hire-Hop-Interface-Library\Hire-Hop-Interface\Hire-Hop-Interface.csproj", "{F9A2D060-B089-4124-9F4A-F82F57E980FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		{9EF1BE03-43D9-45B4-8AC6-D5E5524F25F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EF1BE03-43D9-45B4-8AC6-D5E5524F25F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EF1BE03-43D9-45B4-8AC6-D5E5524F25F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C66483E-C662-4505-A876-78326DD60F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C66483E-C662-4505-A876-78326DD60F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C66483E-C662-4505-A876-78326DD60F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C66483E-C662-4505-A876-78326DD60F58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10254A32-8214-446F-8984-A026A542175A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10254A32-8214-446F-8984-A026A542175A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10254A32-8214-446F-8984-A026A542175A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{0A8BFEE3-3DD0-4645-920F-707E6F5DAC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A8BFEE3-3DD0-4645-920F-707E6F5DAC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A8BFEE3-3DD0-4645-920F-707E6F5DAC49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9A2D060-B089-4124-9F4A-F82F57E980FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9A2D060-B089-4124-9F4A-F82F57E980FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9A2D060-B089-4124-9F4A-F82F57E980FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9A2D060-B089-4124-9F4A-F82F57E980FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
