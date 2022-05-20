@@ -83,6 +83,8 @@ namespace Downloader_UI
                         break;
                 }
 
+                export_items_bool = export_items.IsChecked.Value;
+
                 data_export_thread = new Thread(() => ExportData(@params));
                 data_export_thread.Start();
             }
@@ -91,6 +93,8 @@ namespace Downloader_UI
                 Console.WriteLine("Cannot Start, Already Running");
             }
         }
+
+        private bool export_items_bool;
 
         private async void ExportData(SearchResult.SearchOptions @params)
         {
@@ -115,6 +119,13 @@ namespace Downloader_UI
             Task.WaitAll(load_misc_t);
 
             Console.WriteLine($"Writing Results To {f_name}");
+
+            if (export_items_bool)
+            {
+                JSON_To_CSV.Converter.WriteConversion($"{f_name.Replace(".csv","")}-items.csv", JArray.FromObject(jobs.SelectMany(x=>x.items)));
+            }
+
+            foreach (var j in jobs) j.items = null;
 
             JSON_To_CSV.Converter.WriteConversion(f_name, JArray.FromObject(jobs));
 

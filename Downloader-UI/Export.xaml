@@ -61,5 +61,6 @@
             </ComboBox>
             <Label Content="Status" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Height="31" Width="54" FontSize="16"/>
         </Grid>
+        <CheckBox x:Name="export_items" Content="Export Items" HorizontalAlignment="Left" Margin="170,82,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="16" IsChecked="True"/>
     </Grid>
 </Window>
